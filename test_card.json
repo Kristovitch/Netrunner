@@ -1,0 +1,14 @@
+{
+  "title": "title",
+  "subtitle": "subtitle",
+  "faction": "faction",
+  "play_cost": "play_cost",
+  "card_type": "card_type",
+  "card_subtype": "card_subtype",
+  "card_text": "card_text",
+  "min_deck_size": "min_deck_size",
+  "strength": "strength",
+  "influence_value": "influence_value",
+  "influence_limit": "influence_limit",
+  "set_info": "set_info "
+}

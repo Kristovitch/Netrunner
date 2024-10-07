@@ -1,0 +1,4 @@
+CARDTYPES = {
+    'identity': {},
+    'hardware': {}
+}
