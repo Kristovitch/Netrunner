@@ -1,6 +1,7 @@
 import sys
 import pygame
-import game
+import functional.game as game
+import ui.ui_card as ui_card
 import settings as SETTINGS
 
 
@@ -18,8 +19,19 @@ class Netrunner:
         self.game.setup('runner_deck', 'corp_deck')
 
         # Test Objects
-        self.rectangle = pygame.rect.Rect(176, 134, 17, 17)
-        self.rectangle_draging = False
+        self.card = ui_card.UI_Card(groups=pygame.sprite.Group(),
+                                    left=176,
+                                    top=134,
+                                    width=100,
+                                    height=150,
+                                    background=SETTINGS.HAASBIOROID_BACKGROUND)
+        self.card2 = ui_card.UI_Card(groups=pygame.sprite.Group(),
+                                     left=400,
+                                     top=134,
+                                     width=100,
+                                     height=150,
+                                     background=SETTINGS.SHAPER_BACKGROUND)
+        self.hand = [self.card, self.card2]
 
     def run(self):
         self.running = True
@@ -36,27 +48,26 @@ class Netrunner:
                         self.game.next_turn(self.game.corp)
                     if event.key == pygame.K_2:
                         self.game.next_turn(self.game.runner)
+
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        if self.rectangle.collidepoint(event.pos):
-                            self.rectangle_draging = True
-                            mouse_x, mouse_y = event.pos
-                            offset_x = self.rectangle.x - mouse_x
-                            offset_y = self.rectangle.y - mouse_y
+                        for i in self.hand:
+                            i.pickup(event)
+
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:
-                        self.rectangle_draging = False
+                        for i in self.hand:
+                            i.drop()
 
                 elif event.type == pygame.MOUSEMOTION:
-                    if self.rectangle_draging:
-                        mouse_x, mouse_y = event.pos
-                        self.rectangle.x = mouse_x + offset_x
-                        self.rectangle.y = mouse_y + offset_y
+                    for i in self.hand:
+                        i.move(event)
 
             self.screen.fill(SETTINGS.UI_BG_COLOUR)
-            pygame.draw.rect(self.screen,
-                             SETTINGS.HAASBIROID_BACKGROUND,
-                             self.rectangle)
+
+            for i in self.hand:
+                i.draw(self.screen)
+
             pygame.display.update()
             self.clock.tick(SETTINGS.FPS)
 

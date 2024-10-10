@@ -1,4 +1,4 @@
-import players
+import functional.players as players
 import settings as SETTINGS
 
 

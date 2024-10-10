@@ -1,4 +1,4 @@
-import card
+import functional.card as card
 
 
 def create_card(card_name: str, card_type: str, card_id: str) -> card.Card:
