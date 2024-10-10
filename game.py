@@ -4,14 +4,14 @@ import settings as SETTINGS
 
 class Game:
     def __init__(self) -> None:
-        self.runner = players.Runner(clicks=SETTINGS.RUNNER_STARTING_CLICKS,
-                                     credits=SETTINGS.RUNNER_STARTING_CREDITS,
-                                     deck_size=SETTINGS.RUNNER_STARTING_DECK_SIZE,
-                                     hand_size=SETTINGS.RUNNER_STARTING_HAND_SIZE)
-        self.corp = players.Corp(clicks=SETTINGS.CORP_STARTING_CLICKS,
-                                 credits=SETTINGS.CORP_STARTING_CREDITS,
-                                 deck_size=SETTINGS.CORP_STARTING_DECK_SIZE,
-                                 hand_size=SETTINGS.CORP_STARTING_HAND_SIZE)
+        self.runner = players.Runner(clicks=SETTINGS.RUNNER_START_CLICKS,
+                                     credits=SETTINGS.RUNNER_START_CREDITS,
+                                     deck_size=SETTINGS.RUNNER_START_DECK_SIZE,
+                                     hand_size=SETTINGS.RUNNER_START_HAND_SIZE)
+        self.corp = players.Corp(clicks=SETTINGS.CORP_START_CLICKS,
+                                 credits=SETTINGS.CORP_START_CREDITS,
+                                 deck_size=SETTINGS.CORP_START_DECK_SIZE,
+                                 hand_size=SETTINGS.CORP_START_HAND_SIZE)
         self.whos_turn: str = 'corp'
 
     def setup(self, runner_deck, corp_deck) -> None:
@@ -37,10 +37,31 @@ class Game:
         if self.whos_turn == 'corp':
             self.corp.draw(1, 0)
 
-    def choose_action(self, player: players.Runner | players.Corp, action: str):
+    def choose_action(self,
+                      player: players.Runner | players.Corp,
+                      action: str):
         name = type(player).__name__
-
         if action == 'draw':
             player.draw()
+        if action == 'credit':
+            player.gain_credits()
+        if action == 'install':
+            player.install_card()
+        if action == 'ability':
+            player.trigger_ability()
+
+        if name == 'runner':
+            if action == 'event':
+                player.play_event()
+            if action == 'remove_tag':
+                player.remove_tag()
+            if action == 'run':
+                player.make_a_run()
+
         if name == 'corp':
-            player.start_run()
+            if action == 'operation':
+                player.play_operation()
+            if action == 'advance':
+                player.advance_card()
+            if action == 'trash':
+                player.trash_runner_resource()

@@ -189,6 +189,9 @@ class Runner(Player):
     def start_run(self):
         pass
 
+    def make_a_run(self):
+        pass
+
 
 class Corp(Player):
     def __init__(self, clicks=3, credits=0, identity='', deck_size=0,
@@ -201,9 +204,15 @@ class Corp(Player):
     def play_operation(self, card):
         pass
 
+    def advance_card(self):
+        pass
+
     def trash_runner_resource(self, resource):
         if self.use_credits(2) and self.use_click(1):
             print(resource, ' has been trashed.')
+
+    def purge_virus(self):
+        pass
 
     def trigger_ability(self, card):
         pass
